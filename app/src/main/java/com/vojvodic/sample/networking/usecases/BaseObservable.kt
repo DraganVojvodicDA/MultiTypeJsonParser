@@ -6,7 +6,7 @@ import java.util.concurrent.ConcurrentHashMap
 abstract class BaseObservable<LISTENER> {
 
     //Thread safe set of listeners
-    val mListeners = Collections.newSetFromMap(ConcurrentHashMap<LISTENER, Boolean>(1))
+    private val mListeners = Collections.newSetFromMap(ConcurrentHashMap<LISTENER, Boolean>(1))
 
     fun registerListener(listener: LISTENER) {
         mListeners.add(listener)

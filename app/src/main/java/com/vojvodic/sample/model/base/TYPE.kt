@@ -2,7 +2,7 @@ package com.vojvodic.sample.model.base
 
 import android.annotation.SuppressLint
 
-enum class DATA_TYPE {
+enum class TYPE {
 
     CELLPHONE,
     HEADPHONE,

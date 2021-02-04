@@ -7,6 +7,7 @@ import com.vojvodic.sample.model.*
 import com.vojvodic.sample.model.base.BaseResponse
 import com.vojvodic.sample.networking.usecases.FetchUserUseCase
 import com.vojvodic.sample.networking.usecases.FetchUserWithProductsUseCase
+import com.vojvodic.sample.utils.CastUtil
 
 const val TAG = "SAM_TAG"
 
@@ -77,7 +78,10 @@ class MainActivity : BaseActivity(), FetchUserUseCase.OnUserFetchedListener,
         user.listOfProducts?.let { products ->
             for (product in products) {
                 when (product) {
-                    is Cellphone -> Log.i(TAG, "Cellphone: $product")
+                    is Cellphone -> {
+                        val cellphone = CastUtil.cast<Cellphone>(product)
+                        Log.i(TAG, "Cellphone: $cellphone" + ";   Product type: " + cellphone.type)
+                    }
                     is Headphone -> Log.i(TAG, "Headphone: $product")
                     is Charger -> Log.i(TAG, "Charger: $product")
                     is MemoryCard -> Log.i(TAG, "MemoryCard: $product")

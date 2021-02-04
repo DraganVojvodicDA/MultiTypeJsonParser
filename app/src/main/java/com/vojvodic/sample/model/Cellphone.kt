@@ -1,6 +1,6 @@
 package com.vojvodic.sample.model
 
-import com.vojvodic.sample.model.base.DATA_TYPE
+import com.vojvodic.sample.model.base.TYPE
 
 data class Cellphone(
     val id: Long,
@@ -8,4 +8,4 @@ data class Cellphone(
     val model: String,
     val displaySize: Double,
     val batteryCapacity: Int
-) : Product(DATA_TYPE.CELLPHONE.getType())
+) : Product(TYPE.CELLPHONE.getType())

@@ -6,7 +6,7 @@ import com.google.gson.JsonDeserializer
 import com.google.gson.JsonElement
 import com.vojvodic.sample.model.*
 import com.vojvodic.sample.model.base.BaseResponse
-import com.vojvodic.sample.model.base.DATA_TYPE
+import com.vojvodic.sample.model.base.TYPE
 import java.lang.reflect.Type
 
 class CustomDeserializer : JsonDeserializer<BaseResponse<*>> {
@@ -33,11 +33,11 @@ class CustomDeserializer : JsonDeserializer<BaseResponse<*>> {
             val randomObject = rand.asJsonObject
             val random = when (randomObject.get("type").asString) {
 
-                DATA_TYPE.CELLPHONE.getType() -> gson.fromJson(rand, Cellphone::class.java) as Cellphone
-                DATA_TYPE.CHARGER.getType() -> gson.fromJson(rand, Charger::class.java) as Charger
-                DATA_TYPE.HEADPHONE.getType() -> gson.fromJson(rand, Headphone::class.java) as Headphone
-                DATA_TYPE.MEMORY_CARD.getType() -> gson.fromJson(rand, MemoryCard::class.java) as MemoryCard
-                DATA_TYPE.POWER_BANK.getType() -> gson.fromJson(rand, PowerBank::class.java) as PowerBank
+                TYPE.CELLPHONE.getType() -> gson.fromJson(rand, Cellphone::class.java) as Cellphone
+                TYPE.CHARGER.getType() -> gson.fromJson(rand, Charger::class.java) as Charger
+                TYPE.HEADPHONE.getType() -> gson.fromJson(rand, Headphone::class.java) as Headphone
+                TYPE.MEMORY_CARD.getType() -> gson.fromJson(rand, MemoryCard::class.java) as MemoryCard
+                TYPE.POWER_BANK.getType() -> gson.fromJson(rand, PowerBank::class.java) as PowerBank
                 else -> null
             }
 
