@@ -6,15 +6,16 @@ import android.util.Log
 import android.widget.Button
 import com.vojvodic.sample.model.*
 import com.vojvodic.sample.model.base.BaseResponse
-import com.vojvodic.sample.model.base.Error
-import com.vojvodic.sample.networking.RestApi
-import com.vojvodic.sample.networking.RestCallback
-import com.vojvodic.sample.networking.services.UserService
+import com.vojvodic.sample.networking.usecases.FetchUserUseCase
+import com.vojvodic.sample.networking.usecases.FetchUserWithProductsUseCase
 
 const val TAG = "SAM_TAG"
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), FetchUserUseCase.OnUserFetchedListener,
+    FetchUserWithProductsUseCase.OnFetchUserWithProductsListener {
 
+    private val fetchUserUserCase = FetchUserUseCase()
+    private val fetchUserWithProductsUseCase = FetchUserWithProductsUseCase()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,58 +25,62 @@ class MainActivity : AppCompatActivity() {
         val fetchUserProdBtn: Button = findViewById(R.id.fetchUserWithProducts)
 
         fetchUserBtn.setOnClickListener {
-            fetchUser()
+            fetchUserUserCase.fetchUser()
         }
 
         fetchUserProdBtn.setOnClickListener {
-            userWithProducts()
+            fetchUserWithProductsUseCase.fetchUser()
         }
     }
 
-    private fun fetchUser() {
-        RestApi.service(UserService::class.java).getUser()
-            .enqueue(object : RestCallback<BaseResponse<User>>() {
-                override fun onSuccess(response: BaseResponse<User>) {
-                    Log.i(TAG, "onSuccess: " + response.data.toString())
-                }
-
-                override fun onError(description: String?, error: Error?) {
-                    Log.i(TAG, "onError: " + description)
-                }
-            })
+    override fun onStart() {
+        super.onStart()
+        Log.i(TAG, "onStart: REGISTER")
+        fetchUserUserCase.registerListener(this)
+        fetchUserWithProductsUseCase.registerListener(this)
     }
 
-    private fun userWithProducts() {
-        RestApi.service(UserService::class.java).getUserWithProducts()
-            .enqueue(object : RestCallback<BaseResponse<User>>() {
-                override fun onSuccess(response: BaseResponse<User>) {
-
-                    Log.i(TAG, "************************************************")
-                    Log.i(TAG, "onSuccess: " + response.data.name)
-                    Log.i(TAG, "onSuccess: " + response.data.email)
-                    Log.i(TAG, "************************************************")
-
-                    Log.i(TAG, "List of products size: " + response.listOfProducts?.size)
-
-                    response.listOfProducts?.let { products ->
-                        for (product in products) {
-                            when (product) {
-                                is Cellphone -> Log.i(TAG, "Cellphone: $product")
-                                is Headphone -> Log.i(TAG, "Headphone: $product")
-                                is Charger -> Log.i(TAG, "Charger: $product")
-                                is MemoryCard -> Log.i(TAG, "MemoryCard: $product")
-                            }
-                        }
-                    }
-                }
-
-                override fun onError(description: String?, error: Error?) {
-                    Log.i(TAG, "onError: $description")
-                }
-
-            })
-
-
+    override fun onStop() {
+        super.onStop()
+        Log.i(TAG, "onStop: UNREGISTER")
+        fetchUserUserCase.unregisterListener(this)
+        fetchUserWithProductsUseCase.unregisterListener(this)
     }
 
+    //region **** FETCH USER  ****
+    override fun onUserFetchSuccess(user: BaseResponse<User>) {
+        Log.i(TAG, "onUserFetchSuccess: $user")
+    }
+
+    override fun onUserFetchFailed(description: String?) {
+        Log.i(TAG, "onUserFetchFailed: $description")
+    }
+    //endregion
+
+    //region **** FETCH USER WITH PRODUCTS ****
+    override fun onUserWPFetchSuccess(user: BaseResponse<User>) {
+
+        Log.i(TAG, "************************************************")
+        Log.i(TAG, "onSuccess: " + user.data.name)
+        Log.i(TAG, "onSuccess: " + user.data.email)
+        Log.i(TAG, "************************************************")
+
+        Log.i(TAG, "List of products size: " + user.listOfProducts?.size)
+
+        user.listOfProducts?.let { products ->
+            for (product in products) {
+                when (product) {
+                    is Cellphone -> Log.i(TAG, "Cellphone: $product")
+                    is Headphone -> Log.i(TAG, "Headphone: $product")
+                    is Charger -> Log.i(TAG, "Charger: $product")
+                    is MemoryCard -> Log.i(TAG, "MemoryCard: $product")
+                }
+            }
+        }
+    }
+
+    override fun onUserWPFetchFailed(description: String?) {
+        Log.i(TAG, "onUserWPFetchFailed: $description")
+    }
+    //endregion
 }
