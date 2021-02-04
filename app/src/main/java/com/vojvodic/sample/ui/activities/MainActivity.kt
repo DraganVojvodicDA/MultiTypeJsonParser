@@ -1,9 +1,8 @@
-package com.vojvodic.sample
+package com.vojvodic.sample.ui.activities
 
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import com.vojvodic.sample.R
 import com.vojvodic.sample.model.*
 import com.vojvodic.sample.model.base.BaseResponse
 import com.vojvodic.sample.networking.usecases.FetchUserUseCase
@@ -11,15 +10,23 @@ import com.vojvodic.sample.networking.usecases.FetchUserWithProductsUseCase
 
 const val TAG = "SAM_TAG"
 
-class MainActivity : AppCompatActivity(), FetchUserUseCase.OnUserFetchedListener,
+class MainActivity : BaseActivity(), FetchUserUseCase.OnUserFetchedListener,
     FetchUserWithProductsUseCase.OnFetchUserWithProductsListener {
 
-    private val fetchUserUserCase = FetchUserUseCase()
-    private val fetchUserWithProductsUseCase = FetchUserWithProductsUseCase()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+    private lateinit var fetchUserUserCase: FetchUserUseCase
+    private lateinit var fetchUserWithProductsUseCase: FetchUserWithProductsUseCase
+
+
+    override fun provideLayout(): Int {
+        return R.layout.activity_main
+    }
+
+    override fun layoutReady() {
+
+        fetchUserUserCase = getAppContainer().fetchUserUserCase()
+        fetchUserWithProductsUseCase = getAppContainer().fetchUserWithProductsUseCase()
+
 
         val fetchUserBtn: Button = findViewById(R.id.fetchUser)
         val fetchUserProdBtn: Button = findViewById(R.id.fetchUserWithProducts)
