@@ -5,5 +5,5 @@ import java.io.Serializable
 
 data class BaseResponse<DATA>(
     val data: DATA,
-    val listOfProducts: MutableList<Product>
+    var listOfProducts: MutableList<Product>?
 ) : Serializable

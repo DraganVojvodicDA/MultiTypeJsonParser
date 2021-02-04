@@ -12,9 +12,7 @@ class Constants {
 
 
         const val USER = "453e8417"
-
-
-
+        const val USER_WITH_PRODUCTS = "50706c57"
 
 
 

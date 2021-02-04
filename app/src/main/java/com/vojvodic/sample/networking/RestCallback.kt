@@ -28,6 +28,7 @@ abstract class RestCallback<RESPONSE> : Callback<RESPONSE> {
     }
 
     override fun onFailure(call: Call<RESPONSE>, t: Throwable?) {
+        Log.i(TAG, "onFailure: " + t?.message)
         onError(t?.message, null)
     }
 

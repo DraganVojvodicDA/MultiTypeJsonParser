@@ -4,5 +4,8 @@
 
 
     <string name="fetch_user">Fetch user</string>
+    <string name="fetch_user_with_prod">Fetch user products</string>
+
+
 
 </resources>

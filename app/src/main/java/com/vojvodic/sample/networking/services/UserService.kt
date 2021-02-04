@@ -13,4 +13,7 @@ interface UserService {
     @GET(Constants.USER)
     fun getUser(): Call<BaseResponse<User>>
 
+    @Headers(Constants.CONTENT_TYPE_APP_JSON, Constants.ACCEPT)
+    @GET(Constants.USER_WITH_PRODUCTS)
+    fun getUserWithProducts(): Call<BaseResponse<User>>
 }

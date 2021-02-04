@@ -2,6 +2,8 @@ package com.vojvodic.sample.networking
 
 import com.google.gson.GsonBuilder
 import com.vojvodic.sample.common.Constants
+import com.vojvodic.sample.model.base.BaseResponse
+import com.vojvodic.sample.networking.deserializer.CustomDeserializer
 import com.vojvodic.sample.networking.helper.MockInterceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -14,6 +16,7 @@ object RestApi {
         get() {
 
             val gsonBuilder = GsonBuilder()
+                .registerTypeAdapter(BaseResponse::class.java, CustomDeserializer())
                 .setLenient()
                 .create()
 
@@ -21,7 +24,6 @@ object RestApi {
             loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
 
             val mockInterceptor = MockInterceptor()
-
 
             val client = OkHttpClient.Builder()
                 .addNetworkInterceptor(mockInterceptor)
