@@ -2,6 +2,7 @@ package com.vojvodic.sample.networking
 
 import com.google.gson.GsonBuilder
 import com.vojvodic.sample.common.Constants
+import com.vojvodic.sample.networking.helper.MockInterceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -19,8 +20,11 @@ object RestApi {
             val loggingInterceptor = HttpLoggingInterceptor()
             loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
 
+            val mockInterceptor = MockInterceptor()
+
+
             val client = OkHttpClient.Builder()
-                .addNetworkInterceptor(loggingInterceptor)
+                .addNetworkInterceptor(mockInterceptor)
                 .build()
 
             return Retrofit.Builder()
